@@ -1,0 +1,637 @@
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 1   
+
+
+C51 COMPILER V6.14, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\UART.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE .\UART.C LARGE REGFILE(.\can.ORC) DEBUG OBJECTEXTEND LISTINCLUDE SYMBOLS
+
+stmt level    source
+
+   1          #include "AT89C51XD2.h"     /* special function register declarations for 89C51XD2 */
+   1      =1  /*H***************************************************************************
+   2      =1  * NAME: AT89C51XD2.h           
+   3      =1  *----------------------------------------------------------------------------
+   4      =1  * PURPOSE: SFR Description file for AT89C51xD2 products 
+   5      =1  * 				ON KEIL compiler
+   6      =1  *****************************************************************************/
+   7      =1  
+   8      =1  #define Sfr(x, y)	  	sfr x = y
+   9      =1  #define Sbit(x, y, z)   sbit x = y^z
+  10      =1  #define Sfr16(x,y)	    sfr16 x = y
+  11      =1  
+  12      =1  /*----------------------------------------*/
+  13      =1  /* Include file for 8051 SFR Definitions  */
+  14      =1  /*----------------------------------------*/
+  15      =1  
+  16      =1  /*  BYTE Register  */
+  17      =1  Sfr (P0 , 0x80);        
+  18      =1  
+  19      =1  Sbit (P0_7 , 0x80, 7);
+  20      =1  Sbit (P0_6 , 0x80, 6);
+  21      =1  Sbit (P0_5 , 0x80, 5);
+  22      =1  Sbit (P0_4 , 0x80, 4);
+  23      =1  Sbit (P0_3 , 0x80, 3);
+  24      =1  Sbit (P0_2 , 0x80, 2);
+  25      =1  Sbit (P0_1 , 0x80, 1);
+  26      =1  Sbit (P0_0 , 0x80, 0);
+  27      =1  
+  28      =1  Sfr (P1 , 0x90);        
+  29      =1  
+  30      =1  Sbit (P1_7 , 0x90, 7);
+  31      =1  Sbit (P1_6 , 0x90, 6);
+  32      =1  Sbit (P1_5 , 0x90, 5);
+  33      =1  Sbit (P1_4 , 0x90, 4);
+  34      =1  Sbit (P1_3 , 0x90, 3);
+  35      =1  Sbit (P1_2 , 0x90, 2);
+  36      =1  Sbit (P1_1 , 0x90, 1);
+  37      =1  Sbit (P1_0 , 0x90, 0);
+  38      =1  
+  39      =1  
+  40      =1  
+  41      =1  Sfr (P2 , 0xA0); 
+  42      =1  Sbit (P2_7 , 0xA0, 7);
+  43      =1  Sbit (P2_6 , 0xA0, 6);
+  44      =1  Sbit (P2_5 , 0xA0, 5);
+  45      =1  Sbit (P2_4 , 0xA0, 4);
+  46      =1  Sbit (P2_3 , 0xA0, 3);
+  47      =1  Sbit (P2_2 , 0xA0, 2);
+  48      =1  Sbit (P2_1 , 0xA0, 1);
+  49      =1  Sbit (P2_0 , 0xA0, 0);
+  50      =1  
+  51      =1         
+  52      =1  Sfr (P3 , 0xB0);        
+  53      =1  
+  54      =1  Sbit (P3_7 , 0xB0, 7);
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 2   
+
+  55      =1  Sbit (P3_6 , 0xB0, 6);
+  56      =1  Sbit (P3_5 , 0xB0, 5);
+  57      =1  Sbit (P3_4 , 0xB0, 4);
+  58      =1  Sbit (P3_3 , 0xB0, 3);
+  59      =1  Sbit (P3_2 , 0xB0, 2);
+  60      =1  Sbit (P3_1 , 0xB0, 1);
+  61      =1  Sbit (P3_0 , 0xB0, 0);
+  62      =1  
+  63      =1  Sbit (RD , 0xB0, 7);
+  64      =1  Sbit (WR , 0xB0, 6);
+  65      =1  Sbit (T1 , 0xB0, 5);
+  66      =1  Sbit (T0 , 0xB0, 4);
+  67      =1  Sbit (INT1 , 0xB0, 3);
+  68      =1  Sbit (INT0 , 0xB0, 2);
+  69      =1  Sbit (TXD , 0xB0, 1);
+  70      =1  Sbit (RXD , 0xB0, 0);
+  71      =1  
+  72      =1  Sfr (P4 , 0xC0);        
+  73      =1  Sbit (P4_7 , 0xC0, 7);
+  74      =1  Sbit (P4_6 , 0xC0, 6);
+  75      =1  Sbit (P4_5 , 0xC0, 5);
+  76      =1  Sbit (P4_4 , 0xC0, 4);
+  77      =1  Sbit (P4_3 , 0xC0, 3);
+  78      =1  Sbit (P4_2 , 0xC0, 2);
+  79      =1  Sbit (P4_1 , 0xC0, 1);
+  80      =1  Sbit (P4_0 , 0xC0, 0);
+  81      =1  
+  82      =1  Sfr (P5 , 0xE8);        
+  83      =1  Sbit (P5_7 , 0xE8, 7);
+  84      =1  Sbit (P5_6 , 0xE8, 6);
+  85      =1  Sbit (P5_5 , 0xE8, 5);
+  86      =1  Sbit (P5_4 , 0xE8, 4);
+  87      =1  Sbit (P5_3 , 0xE8, 3);
+  88      =1  Sbit (P5_2 , 0xE8, 2);
+  89      =1  Sbit (P5_1 , 0xE8, 1);
+  90      =1  Sbit (P5_0 , 0xE8, 0);
+  91      =1  
+  92      =1      
+  93      =1  Sfr (PSW , 0xD0);       
+  94      =1  
+  95      =1  Sbit (CY  , 0xD0  , 7);
+  96      =1  Sbit (AC  , 0xD0  , 6);
+  97      =1  Sbit (F0  , 0xD0  , 5);
+  98      =1  Sbit (RS1 , 0xD0  , 4);
+  99      =1  Sbit (RS0 , 0xD0  , 3);
+ 100      =1  Sbit (OV  , 0xD0  , 2);
+ 101      =1  Sbit (UD  , 0xD0  , 1);
+ 102      =1  Sbit (P   , 0xD0  , 0);
+ 103      =1  
+ 104      =1  Sfr (ACC , 0xE0);       
+ 105      =1  Sfr (B , 0xF0); 
+ 106      =1  Sfr (SP , 0x81);        
+ 107      =1  Sfr (DPL , 0x82);       
+ 108      =1  Sfr (DPH , 0x83);       
+ 109      =1  
+ 110      =1  Sfr (PCON , 0x87);      
+ 111      =1  Sfr (CKCON0 , 0x8F);     
+ 112      =1  Sfr (CKCON1 , 0xAF);
+ 113      =1  
+ 114      =1  /*------------------ TIMERS registers ---------------------*/
+ 115      =1  Sfr (TCON , 0x88);
+ 116      =1  Sbit (TF1 , 0x88, 7);
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 3   
+
+ 117      =1  Sbit (TR1 , 0x88, 6);
+ 118      =1  Sbit (TF0 , 0x88, 5);
+ 119      =1  Sbit (TR0 , 0x88, 4);
+ 120      =1  Sbit (IE1 , 0x88, 3);
+ 121      =1  Sbit (IT1 , 0x88, 2);
+ 122      =1  Sbit (IE0 , 0x88, 1);
+ 123      =1  Sbit (IT0 , 0x88, 0);
+ 124      =1          
+ 125      =1  Sfr (TMOD , 0x89);      
+ 126      =1  
+ 127      =1  Sfr  (T2CON , 0xC8);
+ 128      =1  Sbit (TF2   , 0xC8, 7);
+ 129      =1  Sbit (EXF2  , 0xC8, 6);
+ 130      =1  Sbit (RCLK  , 0xC8, 5);
+ 131      =1  Sbit (TCLK  , 0xC8, 4);
+ 132      =1  Sbit (EXEN2 , 0xC8, 3);
+ 133      =1  Sbit (TR2   , 0xC8, 2);
+ 134      =1  Sbit (C_T2  , 0xC8, 1);
+ 135      =1  Sbit (CP_RL2, 0xC8, 0);
+ 136      =1          
+ 137      =1  Sfr (T2MOD , 0xC9);     
+ 138      =1  Sfr (TL0 , 0x8A);       
+ 139      =1  Sfr (TL1 , 0x8B);       
+ 140      =1  Sfr (TL2 , 0xCC);       
+ 141      =1  Sfr (TH0 , 0x8C);       
+ 142      =1  Sfr (TH1 , 0x8D);       
+ 143      =1  Sfr (TH2 , 0xCD);       
+ 144      =1  Sfr (RCAP2L , 0xCA);    
+ 145      =1  Sfr (RCAP2H , 0xCB);    
+ 146      =1  Sfr (WDTRST , 0xA6);    
+ 147      =1  Sfr (WDTPRG , 0xA7);    
+ 148      =1  
+ 149      =1  
+ 150      =1  /*------------------- UART registers ------------------------*/
+ 151      =1  Sfr (SCON , 0x98);      
+ 152      =1  Sbit (SM0  , 0x98, 7);
+ 153      =1  Sbit (FE   , 0x98, 7);
+ 154      =1  Sbit (SM1  , 0x98, 6);
+ 155      =1  Sbit (SM2  , 0x98, 5);
+ 156      =1  Sbit (REN  , 0x98, 4);
+ 157      =1  Sbit (TB8  , 0x98, 3);
+ 158      =1  Sbit (RB8  , 0x98, 2);
+ 159      =1  Sbit (TI   , 0x98, 1);
+ 160      =1  Sbit (RI   , 0x98, 0);
+ 161      =1  
+ 162      =1  Sfr (SBUF , 0x99);      
+ 163      =1  Sfr (SADEN , 0xB9);     
+ 164      =1  Sfr (SADDR , 0xA9);     
+ 165      =1  
+ 166      =1  /*-------------------- Internal Baud Rate Generator --------*/
+ 167      =1  Sfr (BRL  	, 0x9A);      
+ 168      =1  Sfr (BDRCON , 0x9B);      
+ 169      =1  
+ 170      =1  
+ 171      =1  
+ 172      =1  /*-------------------- IT registers -----------------------*/
+ 173      =1     
+ 174      =1  Sfr (IEN1  , 0xB1);      
+ 175      =1  Sfr (IPH0 , 0xB7);      
+ 176      =1  Sfr (IPH1 , 0xB3);      
+ 177      =1  Sfr (IPL0 , 0xB8);      
+ 178      =1  Sfr (IPL1 , 0xB2);      
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 4   
+
+ 179      =1  
+ 180      =1  
+ 181      =1  
+ 182      =1  /*  IEN0  */
+ 183      =1  Sfr (IE    , 0xA8);   
+ 184      =1  Sbit (EA   , 0xA8, 7);
+ 185      =1  Sbit (EC   , 0xA8, 6);
+ 186      =1  Sbit (ET2  , 0xA8, 5);
+ 187      =1  Sbit (ES   , 0xA8, 4);
+ 188      =1  Sbit (ET1  , 0xA8, 3);
+ 189      =1  Sbit (EX1  , 0xA8, 2);
+ 190      =1  Sbit (ET0  , 0xA8, 1);
+ 191      =1  Sbit (EX0  , 0xA8, 0);
+ 192      =1  
+ 193      =1  
+ 194      =1  /*--------------------- PCA registers -----------------------------*/
+ 195      =1  Sfr (CCON , 0xD8);      
+ 196      =1  Sfr (CMOD , 0xD9);      
+ 197      =1  Sfr (CH , 0xF9);        
+ 198      =1  Sfr (CL , 0xE9);        
+ 199      =1  Sfr (CCAP0H  , 0xFA);   
+ 200      =1  Sfr (CCAP0L  , 0xEA);   
+ 201      =1  Sfr (CCAPM0  , 0xDA);   
+ 202      =1  Sfr (CCAP1H  , 0xFB);   
+ 203      =1  Sfr (CCAP1L  , 0xEB);   
+ 204      =1  Sfr (CCAPM1  , 0xDB);   
+ 205      =1  Sfr (CCAP2H  , 0xFC);   
+ 206      =1  Sfr (CCAP2L  , 0xEC);   
+ 207      =1  Sfr (CCAPM2  , 0xDC);   
+ 208      =1  Sfr (CCAP3H  , 0xFD);   
+ 209      =1  Sfr (CCAP3L  , 0xED);   
+ 210      =1  Sfr (CCAPM3  , 0xDD);   
+ 211      =1  Sfr (CCAP4H  , 0xFE);   
+ 212      =1  Sfr (CCAP4L  , 0xEE);   
+ 213      =1  Sfr (CCAPM4  , 0xDE);   
+ 214      =1  /* CCON */
+ 215      =1  Sbit (CF   , 0xD8, 7);
+ 216      =1  Sbit (CR   , 0xD8, 6);
+ 217      =1  
+ 218      =1  Sbit (CCF4   , 0xD8, 4);
+ 219      =1  Sbit (CCF3  , 0xD8, 3);
+ 220      =1  Sbit (CCF2  , 0xD8, 2);
+ 221      =1  Sbit (CCF1  , 0xD8, 1);
+ 222      =1  Sbit (CCF0  , 0xD8, 0);
+ 223      =1  
+ 224      =1  
+ 225      =1  /*------------------ T W I registers ------------------------------*/
+ 226      =1  Sfr ( SSCON , 0x93);
+ 227      =1  Sfr ( SSCS , 0x94);
+ 228      =1  Sfr ( SSDAT , 0x95);
+ 229      =1  Sfr ( SSADR , 0x96);
+ 230      =1  Sfr ( PI2	, 0xF8);	
+ 231      =1  Sbit (PI2_1  , 0xF8, 1);
+ 232      =1  Sbit (PI2_0  , 0xF8, 0);
+ 233      =1  
+ 234      =1  /*-------------------- OSC control registers ----------------------*/
+ 235      =1  Sfr ( CKSEL , 0x85 );
+ 236      =1  Sfr ( OSCCON , 0x86 );
+ 237      =1  Sfr ( CKRL , 0x97 );
+ 238      =1  
+ 239      =1  /*-------------------- Keyboard control registers -----------------*/
+ 240      =1  Sfr ( KBLS , 0x9C );
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 5   
+
+ 241      =1  Sfr ( KBE , 0x9D );
+ 242      =1  Sfr ( KBF , 0x9E );
+ 243      =1  /*-------------------- SPI ---------------------- -----------------*/
+ 244      =1  Sfr ( SPCON, 0xC3 );
+ 245      =1  Sfr ( SPSTA, 0xC4 );
+ 246      =1  Sfr ( SPDAT, 0xC5 );
+ 247      =1  
+ 248      =1  /*------ Misc ----------------------------------------------------*/
+ 249      =1  Sfr	( AUXR , 0x8E);
+ 250      =1  Sfr ( AUXR1, 0xA2);
+ 251      =1  Sfr ( FCON, 0xD1);
+ 252      =1  
+ 253      =1  
+ 254      =1  /*------ E data --------------------------------------------------*/
+ 255      =1  
+ 256      =1  Sfr ( EECON,  0xD2 );
+   2          #include "canreg.h"	        /* can definition file */
+   1      =1  #define NODE_ID 0x01
+   2      =1  
+   3      =1  // error
+   4      =1  #define BUSOFF 0xFF
+   5      =1  #define ERROR 0xF0
+   6      =1  
+   7      =1  extern unsigned char canreg[77];
+   8      =1  
+   9      =1  /****************************/
+  10      =1  /* CAN Register Declaration */
+  11      =1  /* CAN Control Registers    */   
+  12      =1  
+  13      =1  #define		SETUP_0			canreg[0]
+  14      =1  #define		SETUP_1			canreg[1]
+  15      =1  #define		SETUP_2			canreg[2]
+  16      =1  #define		SETUP_3			canreg[3]
+  17      =1  #define		SETUP_RX		canreg[4]
+  18      =1  
+  19      =1  #define		STATUS			canreg[5]
+  20      =1  #define		STATUS_RX		canreg[6]
+  21      =1  
+  22      =1  #define		FILTER_AM_0		canreg[7]
+  23      =1  #define		FILTER_AM_1		canreg[8]
+  24      =1  
+  25      =1  #define		ERR_COUNT_TX	canreg[9]
+  26      =1  #define		ERR_COUNT_RX	canreg[10]
+  27      =1  
+  28      =1  #define		TRIG_MATCH_0	canreg[11]
+  29      =1  #define		TRIG_MATCH_1	canreg[12]
+  30      =1  
+  31      =1  #define		TX_ARB_0		canreg[16]
+  32      =1  #define		TX_ARB_1		canreg[17]
+  33      =1  #define		TX_ARB_2		canreg[18]
+  34      =1  #define		TX_ARB_3		canreg[19]
+  35      =1  #define		TX_MESSAGE_0	canreg[20]
+  36      =1  #define		TX_MESSAGE_1	canreg[21]
+  37      =1  #define		TX_MESSAGE_2	canreg[22]
+  38      =1  #define		TX_MESSAGE_3	canreg[23]
+  39      =1  #define		TX_MESSAGE_4	canreg[24]
+  40      =1  #define		TX_MESSAGE_5	canreg[25]
+  41      =1  #define		TX_MESSAGE_6	canreg[26]
+  42      =1  #define		TX_MESSAGE_7	canreg[27]
+  43      =1  
+  44      =1  #define		RX1_ARB_0		canreg[32]
+  45      =1  #define		RX1_ARB_1		canreg[33]
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 6   
+
+  46      =1  #define		RX1_ARB_2		canreg[34]
+  47      =1  #define		RX1_ARB_3		canreg[35]
+  48      =1  #define		RX1_MESSAGE_0	canreg[36]
+  49      =1  #define		RX1_MESSAGE_1	canreg[37]
+  50      =1  #define		RX1_MESSAGE_2	canreg[38]
+  51      =1  #define		RX1_MESSAGE_3	canreg[39]
+  52      =1  #define		RX1_MESSAGE_4	canreg[40]
+  53      =1  #define		RX1_MESSAGE_5	canreg[41]
+  54      =1  #define		RX1_MESSAGE_6	canreg[42]
+  55      =1  #define		RX1_MESSAGE_7	canreg[43]
+  56      =1  #define		RX1_STATUS		canreg[44]
+  57      =1  
+  58      =1  #define		RX2_ARB_0		canreg[48]
+  59      =1  #define		RX2_ARB_1		canreg[49]
+  60      =1  #define		RX2_ARB_2		canreg[50]
+  61      =1  #define		RX2_ARB_3		canreg[51]
+  62      =1  #define		RX2_MESSAGE_0	canreg[52]
+  63      =1  #define		RX2_MESSAGE_1	canreg[53]
+  64      =1  #define		RX2_MESSAGE_2	canreg[54]
+  65      =1  #define		RX2_MESSAGE_3	canreg[55]
+  66      =1  #define		RX2_MESSAGE_4	canreg[56]
+  67      =1  #define		RX2_MESSAGE_5	canreg[57]
+  68      =1  #define		RX2_MESSAGE_6	canreg[58]
+  69      =1  #define		RX2_MESSAGE_7	canreg[59]
+  70      =1  #define		RX2_STATUS		canreg[60]
+  71      =1  
+  72      =1  #define		RX3_ARB_0		canreg[64]
+  73      =1  #define		RX3_ARB_1		canreg[65]
+  74      =1  #define		RX3_ARB_2		canreg[66]
+  75      =1  #define		RX3_ARB_3		canreg[67]
+  76      =1  #define		RX3_MESSAGE_0	canreg[68]
+  77      =1  #define		RX3_MESSAGE_1	canreg[69]
+  78      =1  #define		RX3_MESSAGE_2	canreg[70]
+  79      =1  #define		RX3_MESSAGE_3	canreg[71]
+  80      =1  #define		RX3_MESSAGE_4	canreg[72]
+  81      =1  #define		RX3_MESSAGE_5	canreg[73]
+  82      =1  #define		RX3_MESSAGE_6	canreg[74]
+  83      =1  #define		RX3_MESSAGE_7	canreg[75]
+  84      =1  #define		RX3_STATUS		canreg[76]
+  85      =1  
+   3          #include "slip.h"
+   1      =1  int SLIP_Encode_Frame(unsigned char *in, int len, unsigned char *out);
+   2      =1  int SLIP_Decode_Frame(unsigned char c, unsigned char *outbuf);
+   4          #include "crc.h"
+   1      =1  unsigned short calc_crc(unsigned char *buf, int len);
+   2      =1  int check_crc(unsigned char *buf, int len);
+   5          #include "can.h"
+   1      =1  // message identifier
+   2      =1  #define MSG_ID_DATA_ALL 0x1000
+   3      =1  #define MSG_ID_DATA_NODE1 0x1020
+   4      =1  #define MSG_ID_DATA_NODE2 0x1040
+   5      =1  #define MSG_ID_DATA_NODE3 0X1060
+   6      =1  
+   7      =1  void Init_CAN();
+   8      =1  void def_RX();
+   9      =1  void canmsg_transmit();
+  10      =1  void Transmit_CAN_MSG(unsigned char *msg, int len);
+  11      =1  int Get_Receive_Message(unsigned char *RecvData, int index);
+  12      =1  
+   6          #include "uart.h"
+   1      =1  /* 1st byte : functional group */
+   2      =1  #define REGISTER_DISPLAY 	0x00
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 7   
+
+   3      =1  #define REGISTER_SET 		0x01
+   4      =1  #define CANMSG_TRANSMIT 	0x02
+   5      =1  #define CANMSG_DATASET  	0x03
+   6      =1  #define CAN_RESET      		0x04
+   7      =1  
+   8      =1  #define CAN_REQUEST 		0x10
+   9      =1  #define CAN_RESPONSE 		0x20
+  10      =1  
+  11      =1  
+  12      =1  void Init_UART();
+  13      =1  unsigned char ReadChar();
+  14      =1  void WriteChar(unsigned char Data);
+  15      =1  void TransmitMessage(unsigned char* msg, int len);
+  16      =1  void create_error_msg(unsigned char *msg);
+  17      =1  
+   7          
+   8          unsigned char RecvData_flag;
+   9          unsigned int RecvData_len[2];
+  10          unsigned char RecvData_rdata[2][30];
+  11          unsigned char Error_Buf[10];
+  12          int error_flag = 0;
+  13          
+  14          void Init_UART()
+  15          {
+  16   1      	int i;
+  17   1      	
+  18   1      	TMOD |= 0x20;    // 8-bit timer (8-bit autoload)
+  19   1      
+  20   1      	SCON = 0x52;    // mode 1, TI = 0, RI = 0
+  21   1      	TH1 = 0xFD;		// BAUDRATE = 19200 - 11.0592
+  22   1      	SBUF = 0;
+  23   1      	PCON = 0x80;	// SMOD = 1
+  24   1      
+  25   1      	TR1 = 1;		// timer 1 start
+  26   1      
+  27   1      	RecvData_flag = 0;
+  28   1      	RecvData_len[0] = 0;
+  29   1      	RecvData_len[1] = 0;
+  30   1      
+  31   1      	for(i=0; i<30; i++)
+  32   1      		Error_Buf[i] = 0x00;
+  33   1      }
+  34          
+  35          void WriteChar(unsigned char Data)
+  36          {
+  37   1      	while(!TI) ;
+  38   1      	SBUF = Data;
+  39   1      	TI = 0;
+  40   1      }
+  41          
+  42          
+  43          unsigned char ReadChar()
+  44          {
+  45   1      	unsigned char ch;
+  46   1      
+  47   1      	while(!RI) ;
+  48   1      	ch = SBUF;
+  49   1      	RI = 0;
+  50   1      
+  51   1      	return ch;
+  52   1      }    
+  53          
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 8   
+
+  54          void TransmitMessage(unsigned char* msg, int len)
+  55          {
+  56   1      	unsigned char debug_msg[30];
+  57   1      
+  58   1      	int i;
+  59   1      	int debug_len;
+  60   1      
+  61   1      	debug_len = SLIP_Encode_Frame(msg, len, debug_msg);
+  62   1          for (i = 0; i < debug_len; i++)
+  63   1      	{
+  64   2      		WriteChar(debug_msg[i]);
+  65   2      	}	
+  66   1      }
+  67          
+  68          
+  69          void create_error_msg(unsigned char *msg){
+  70   1      	msg[0] = NODE_ID;
+  71   1      	if(STATUS & 0x01)
+  72   1      		msg[1] = BUSOFF;
+  73   1      	else if(STATUS & 0x02)
+  74   1      		msg[1] = ERROR;
+  75   1      }
+  76          
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 9   
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+RecvData_rdata . . . . . . . . . . . .  PUBLIC   XDATA  ARRAY    0000H  60
+ReadChar . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  ch . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+CCF2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DAH  1
+CCF3 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DBH  1
+CCF4 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DCH  1
+_TransmitMessage . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  msg. . . . . . . . . . . . . . . . .  * REG *  DATA   PTR      0001H  3
+  len. . . . . . . . . . . . . . . . .  * REG *  DATA   INT      0004H  2
+  debug_msg. . . . . . . . . . . . . .  AUTO     XDATA  ARRAY    0000H  30
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   INT      0002H  2
+  debug_len. . . . . . . . . . . . . .  * REG *  DATA   INT      0004H  2
+AC . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D6H  1
+T0 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B4H  1
+T1 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B5H  1
+EA . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00AFH  1
+EC . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00AEH  1
+CF . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DFH  1
+FE . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009FH  1
+Error_Buf. . . . . . . . . . . . . . .  PUBLIC   XDATA  ARRAY    003CH  10
+RecvData_flag. . . . . . . . . . . . .  PUBLIC   XDATA  U_CHAR   0046H  1
+_create_error_msg. . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  msg. . . . . . . . . . . . . . . . .  * REG *  DATA   PTR      0001H  3
+P0_0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0080H  1
+P1_0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0090H  1
+P0_1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0081H  1
+P2_0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A0H  1
+P1_1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0091H  1
+P0_2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0082H  1
+P3_0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B0H  1
+P2_1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A1H  1
+P1_2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0092H  1
+P0_3 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0083H  1
+P4_0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C0H  1
+P3_1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B1H  1
+P2_2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A2H  1
+P1_3 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0093H  1
+P0_4 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0084H  1
+CR . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DEH  1
+P5_0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00E8H  1
+P4_1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C1H  1
+P3_2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B2H  1
+P2_3 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A3H  1
+P1_4 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0094H  1
+P0_5 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0085H  1
+EXF2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CEH  1
+P5_1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00E9H  1
+P4_2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C2H  1
+RD . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B7H  1
+P3_3 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B3H  1
+P2_4 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A4H  1
+P1_5 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0095H  1
+P0_6 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0086H  1
+P5_2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00EAH  1
+P4_3 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C3H  1
+P3_4 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B4H  1
+P2_5 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A5H  1
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 10  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+P1_6 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0096H  1
+P0_7 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0087H  1
+ES . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ACH  1
+P5_3 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00EBH  1
+P4_4 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C4H  1
+P3_5 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B5H  1
+P2_6 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A6H  1
+P1_7 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0097H  1
+UD . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D1H  1
+P5_4 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ECH  1
+P4_5 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C5H  1
+P3_6 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B6H  1
+P2_7 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A7H  1
+_SLIP_Encode_Frame . . . . . . . . . .  EXTERN   CODE   PROC     -----  -----
+P5_5 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00EDH  1
+P4_6 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C6H  1
+P3_7 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B7H  1
+RI . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0098H  1
+P5_6 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00EEH  1
+P4_7 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C7H  1
+CY . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D7H  1
+P5_7 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00EFH  1
+INT0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B2H  1
+TI . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0099H  1
+INT1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B3H  1
+OV . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D2H  1
+C_T2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C9H  1
+WR . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B6H  1
+error_flag . . . . . . . . . . . . . .  PUBLIC   XDATA  INT      0047H  2
+RCLK . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CDH  1
+TCLK . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CCH  1
+RecvData_len . . . . . . . . . . . . .  PUBLIC   XDATA  ARRAY    0049H  4
+SBUF . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0099H  1
+PCON . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0087H  1
+Init_UART. . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   INT      0006H  2
+SCON . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0098H  1
+TMOD . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0089H  1
+IE0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0089H  1
+IE1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008BH  1
+CP_RL2 . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C8H  1
+ET0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A9H  1
+ET1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ABH  1
+TF0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008DH  1
+ET2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ADH  1
+TF1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008FH  1
+RB8. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009AH  1
+TF2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CFH  1
+EX0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A8H  1
+TH1. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   008DH  1
+IT0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0088H  1
+EX1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00AAH  1
+TB8. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009BH  1
+IT1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008AH  1
+P. . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D0H  1
+SM0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009FH  1
+SM1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009EH  1
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:56 PAGE 11  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+SM2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009DH  1
+RS0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D3H  1
+TR0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008CH  1
+RS1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D4H  1
+TR1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008EH  1
+TR2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CAH  1
+PI2_0. . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00F8H  1
+PI2_1. . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00F9H  1
+EXEN2. . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CBH  1
+REN. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009CH  1
+_WriteChar . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  Data . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+RXD. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B0H  1
+TXD. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B1H  1
+canreg . . . . . . . . . . . . . . . .  EXTERN   XDATA  ARRAY    -----  77
+F0 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D5H  1
+CCF0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D8H  1
+CCF1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D9H  1
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    154    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     77      30
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

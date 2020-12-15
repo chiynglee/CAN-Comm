@@ -1,0 +1,10 @@
+"UART.obj",
+"CRC.obj",
+"MAIN.obj",
+"SLIP.obj",
+"CAN.obj",
+"ISR.obj",
+"TIMER.obj" 
+TO "can" REGFILE (.\can.ORC) 
+RAMSIZE(256) 
+CODE( 0X0000-0XFFFF )

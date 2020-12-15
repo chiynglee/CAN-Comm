@@ -1,0 +1,13 @@
+"UART.obj",
+"CRC.obj",
+"ISR.obj",
+"LED.obj",
+"MAIN.obj",
+"SLIP.obj",
+"CAN.obj",
+"TIMER.obj" 
+TO "can" 
+IXREF 
+RAMSIZE(256) 
+CODE( 0X4000-0XFFFF )
+XDATA( 0X0100-0XFFFF )

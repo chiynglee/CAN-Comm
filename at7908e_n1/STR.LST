@@ -1,0 +1,33 @@
+C51 COMPILER V6.14  STR                                                                    11/08/2005 15:58:39 PAGE 1   
+
+
+C51 COMPILER V6.14, COMPILATION OF MODULE STR
+OBJECT MODULE PLACED IN .\STR.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE .\STR.C LARGE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include "str.h"
+   2          
+   3          int strlen(const  char *s2)
+   4          {
+   5   1      	const char *p2 = (const char*)s2;
+   6   1      	int n = 0;
+   7   1      
+   8   1      	while(*p2++) n++;
+   9   1      	return n;
+  10   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     43    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       3
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,984 @@
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 1   
+
+
+C51 COMPILER V6.14, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\UART.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE .\UART.C LARGE DEBUG OBJECTEXTEND CODE LISTINCLUDE SYMBOLS
+
+stmt level    source
+
+   1          #include "regc515c.h"     	/* special function register declarations for C515C */
+   1      =1  
+   2      =1  /* (c) Copyright SIEMENS 1996 , All rights reserved. */
+   3      =1  /*  Register Declarations for the C515C Processor    */
+   4      =1  
+   5      =1  /**********************/
+   6      =1  /*  BYTE Register     */
+   7      =1  sfr   P0     = 0x80;
+   8      =1  sfr   SP     = 0x81;
+   9      =1  sfr   DPL    = 0x82;
+  10      =1  sfr   DPH    = 0x83;
+  11      =1  sfr   WDTREL = 0x86;
+  12      =1  sfr   PCON   = 0x87;
+  13      =1  sfr   TCON   = 0x88;
+  14      =1  sfr   TMOD   = 0x89;
+  15      =1  sfr   TL0    = 0x8A;
+  16      =1  sfr   TL1    = 0x8B;
+  17      =1  sfr   TH0    = 0x8C;
+  18      =1  sfr   TH1    = 0x8D;
+  19      =1  
+  20      =1  sfr   P1     = 0x90;
+  21      =1  sfr   XPAGE  = 0x91;
+  22      =1  sfr   DPSEL  = 0x92;
+  23      =1  sfr   SSCCON = 0x93;
+  24      =1  sfr   STB    = 0x94;
+  25      =1  sfr   SRB    = 0x95;
+  26      =1  sfr   SSCMOD = 0x96;
+  27      =1  sfr   SCON   = 0x98;
+  28      =1  sfr   SBUF   = 0x99;
+  29      =1  sfr   IEN2   = 0x9A;
+  30      =1  
+  31      =1  sfr   P2     = 0xA0;
+  32      =1  sfr   IEN0   = 0xA8;
+  33      =1  sfr   IP0    = 0xA9;
+  34      =1  sfr   SRELL  = 0xAA;
+  35      =1  sfr   SCF    = 0xAB;
+  36      =1  sfr   SCIEN  = 0xAC;
+  37      =1  
+  38      =1  sfr   P3     = 0xB0;
+  39      =1  sfr   SYSCON = 0xB1;
+  40      =1  sfr   IEN1   = 0xB8;
+  41      =1  sfr   IP1    = 0xB9;
+  42      =1  sfr   SRELH  = 0xBA;
+  43      =1  
+  44      =1  sfr   IRCON  = 0xC0;
+  45      =1  sfr   CCEN   = 0xC1;
+  46      =1  sfr   CCL1   = 0xC2;
+  47      =1  sfr   CCH1   = 0xC3;
+  48      =1  sfr   CCL2   = 0xC4;
+  49      =1  sfr   CCH2   = 0xC5;
+  50      =1  sfr   CCL3   = 0xC6;
+  51      =1  sfr   CCH3   = 0xC7;
+  52      =1  sfr   T2CON  = 0xC8;
+  53      =1  sfr   CRCL   = 0xCA;
+  54      =1  sfr   CRCH   = 0xCB;
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 2   
+
+  55      =1  sfr   TL2    = 0xCC;
+  56      =1  sfr   TH2    = 0xCD;
+  57      =1                 
+  58      =1  sfr   PSW    = 0xD0;
+  59      =1  sfr   ADCON0 = 0xD8;
+  60      =1  sfr   ADDATH = 0xD9;
+  61      =1  sfr   ADDATL = 0xDA;
+  62      =1  sfr   P6     = 0xDB;
+  63      =1  sfr   ADCON1 = 0xDC;
+  64      =1  sfr   P7     = 0xDD;
+  65      =1  sfr   CCPL   = 0xDE;
+  66      =1  sfr   CCPH   = 0xDF;
+  67      =1  
+  68      =1  sfr   ACC    = 0xE0;
+  69      =1  sfr   P4     = 0xE8;
+  70      =1  
+  71      =1  sfr   B      = 0xF0;
+  72      =1  sfr   P5     = 0xF8;
+  73      =1  sfr   DIR5   = 0xF8;
+  74      =1  
+  75      =1  /*********************/
+  76      =1  /* BIT Register      */
+  77      =1  
+  78      =1  /* TCON */
+  79      =1  sbit  TF1    = 0x8F;
+  80      =1  sbit  TR1    = 0x8E;
+  81      =1  sbit  TF0    = 0x8D;
+  82      =1  sbit  TR0    = 0x8C;
+  83      =1  sbit  IE1    = 0x8B;
+  84      =1  sbit  IT1    = 0x8A;
+  85      =1  sbit  IE0    = 0x89;
+  86      =1  sbit  IT0    = 0x88;
+  87      =1  /* SCON */
+  88      =1  sbit  SM0    = 0x9F;
+  89      =1  sbit  SM1    = 0x9E;
+  90      =1  sbit  SM2    = 0x9D;
+  91      =1  sbit  REN    = 0x9C;
+  92      =1  sbit  TB8    = 0x9B;
+  93      =1  sbit  RB8    = 0x9A;
+  94      =1  sbit  TI     = 0x99;
+  95      =1  sbit  RI     = 0x98;
+  96      =1  /* IEN0 */
+  97      =1  sbit  EAL    = 0xAF;
+  98      =1  sbit  WDT    = 0xAE;
+  99      =1  sbit  ET2    = 0xAD;
+ 100      =1  sbit  ES     = 0xAC;
+ 101      =1  sbit  ET1    = 0xAB;
+ 102      =1  sbit  EX1    = 0xAA;
+ 103      =1  sbit  ET0    = 0xA9;
+ 104      =1  sbit  EX0    = 0xA8;
+ 105      =1  /* IEN1 */
+ 106      =1  sbit  EXEN2  = 0xBF;
+ 107      =1  sbit  SWDT   = 0xBE;
+ 108      =1  sbit  EX6M   = 0xBD;
+ 109      =1  sbit  EX5    = 0xBC;
+ 110      =1  sbit  EX4    = 0xBB;
+ 111      =1  sbit  EX3    = 0xBA;
+ 112      =1  sbit  EX2    = 0xB9;
+ 113      =1  sbit  EADC   = 0xB8;
+ 114      =1  /* IEN2 */
+ 115      =1  sbit  ECAN   = 0x9B;
+ 116      =1  sbit  ESSC   = 0x9C;
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 3   
+
+ 117      =1  sbit  EX7    = 0x9E;
+ 118      =1  sbit  EX8    = 0x9F;
+ 119      =1  /* P3 */
+ 120      =1  sbit  RD     = 0xB7;
+ 121      =1  sbit  WR     = 0xB6;
+ 122      =1  sbit  T1     = 0xB5;
+ 123      =1  sbit  T0     = 0xB4;
+ 124      =1  sbit  INT1   = 0xB3;
+ 125      =1  sbit  INT0   = 0xB2;
+ 126      =1  sbit  TXD    = 0xB1;
+ 127      =1  sbit  RXD    = 0xB0;
+ 128      =1  /* T2CON */
+ 129      =1  sbit  T2PS   = 0xCF;
+ 130      =1  sbit  I3FR   = 0xCE;
+ 131      =1  sbit  I2FR   = 0xCD;
+ 132      =1  sbit  T2R1   = 0xCC;
+ 133      =1  sbit  T2R0   = 0xCB;
+ 134      =1  sbit  T2CM   = 0xCA;
+ 135      =1  sbit  T2L1   = 0xC9;
+ 136      =1  sbit  T2I0   = 0xC8;
+ 137      =1  /* IRCON */
+ 138      =1  sbit  EXF2   = 0xC7;
+ 139      =1  sbit  TF2    = 0xC6;
+ 140      =1  sbit  IEX6   = 0xC5;
+ 141      =1  sbit  IEX5   = 0xC4;
+ 142      =1  sbit  IEX4   = 0xC3;
+ 143      =1  sbit  IEX3   = 0xC2;
+ 144      =1  sbit  IEX2   = 0xC1;
+ 145      =1  sbit  IADC   = 0xC0;
+ 146      =1  /* ADCON0 */
+ 147      =1  sbit  BD     = 0xDF;
+ 148      =1  sbit  CLK    = 0xDE;
+ 149      =1  sbit  ADEX   = 0xDD;
+ 150      =1  sbit  BSY    = 0xDC;
+ 151      =1  sbit  ADM    = 0xDB;
+ 152      =1  sbit  MX2    = 0xDA;
+ 153      =1  sbit  MX1    = 0xD9;
+ 154      =1  sbit  MX0    = 0xD8;
+ 155      =1  /* PSW */
+ 156      =1  sbit  CY     = 0xD7;
+ 157      =1  sbit  AC     = 0xD6;
+ 158      =1  sbit  F0     = 0xD5;
+ 159      =1  sbit  RS1    = 0xD4;
+ 160      =1  sbit  RS0    = 0xD3;
+ 161      =1  sbit  OV     = 0xD2;
+ 162      =1  sbit  F1     = 0xD1;
+ 163      =1  sbit  P      = 0xD0;
+ 164      =1  /*  P4    */
+ 165      =1  sbit  RXDC   = 0xEF;
+ 166      =1  sbit  TXDC   = 0xEE;
+ 167      =1  sbit  INT8   = 0xED;
+ 168      =1  sbit  SLS    = 0xEC;
+ 169      =1  sbit  STO    = 0xEB;
+ 170      =1  sbit  SRI    = 0xEA;
+ 171      =1  sbit  SCLK   = 0xE9;
+ 172      =1  sbit  ADST   = 0xE8;
+ 173      =1  
+ 174      =1  
+   2          #include "led.h"
+   1      =1  #define P4_0 ADST
+   2      =1  #define P4_1 SCLK
+   3      =1  #define P4_2 SRI
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 4   
+
+   4      =1  #define P4_3 STO
+   5      =1  #define P4_4 SLS
+   6      =1  #define P4_5 INT8
+   7      =1  #define P4_6 TXDC
+   8      =1  #define P4_7 RXDC
+   9      =1  
+  10      =1  void Init_LED();
+   3          #include "slip.h"
+   1      =1  int SLIP_Encode_Frame(unsigned char *in, int len, unsigned char *out);
+   2      =1  int SLIP_Decode_Frame(unsigned char c, unsigned char *outbuf);
+   4          #include "crc.h"
+   1      =1  unsigned short calc_crc(unsigned char *buf, int len);
+   2      =1  int check_crc(unsigned char *buf, int len);
+   5          #include "canreg.h"
+   1      =1  #define NODE_ID 0x02
+   2      =1  
+   3      =1  // error
+   4      =1  #define BUSOFF 0xFF
+   5      =1  #define STUFF_ERROR 0xF0
+   6      =1  #define FORM_ERROR 0xF1
+   7      =1  #define ACK_ERROR 0xF2
+   8      =1  #define CRC_ERROR 0xF3
+   9      =1  
+  10      =1  
+  11      =1  extern unsigned char pdata canreg[256];
+  12      =1  
+  13      =1  /****************************/
+  14      =1  /* CAN Register Declaration */
+  15      =1  /* CAN Control Registers    */   
+  16      =1  
+  17      =1  #define 	CR	 canreg[  0]
+  18      =1  #define  	SR	 canreg[  1]
+  19      =1  #define  	IR	 canreg[  2]
+  20      =1  #define  	BTR0   	 canreg[  4]
+  21      =1  #define  	BTR1   	 canreg[  5]
+  22      =1  #define  	GMS0   	 canreg[  6]
+  23      =1  #define  	GMS1   	 canreg[  7]
+  24      =1  #define  	UGML0  	 canreg[  8]
+  25      =1  #define  	UGML1  	 canreg[  9]
+  26      =1  #define  	LGML0  	 canreg[ 10]
+  27      =1  #define  	LGML1  	 canreg[ 11]
+  28      =1  #define  	UMLM0  	 canreg[ 12]
+  29      =1  #define  	UMLM1  	 canreg[ 13]
+  30      =1  #define  	LMLM0  	 canreg[ 14]
+  31      =1  #define  	LMLM1  	 canreg[ 15]
+  32      =1  
+  33      =1  /* CAN Message 1 Registers */ 
+  34      =1  #define  	MCR0_M1	 canreg[ 16]
+  35      =1  #define  	MCR1_M1	 canreg[ 17]
+  36      =1  #define  	UAR0_M1	 canreg[ 18]
+  37      =1  #define  	UAR1_M1	 canreg[ 19]
+  38      =1  #define  	LAR0_M1	 canreg[ 20]
+  39      =1  #define  	LAR1_M1	 canreg[ 21]
+  40      =1  #define  	MCFG_M1	 canreg[ 22]
+  41      =1  #define  	DB0_M1 	 canreg[ 23]
+  42      =1  #define  	DB1_M1 	 canreg[ 24]
+  43      =1  #define  	DB2_M1 	 canreg[ 25]
+  44      =1  #define  	DB3_M1 	 canreg[ 26]
+  45      =1  #define  	DB4_M1 	 canreg[ 27]
+  46      =1  #define  	DB5_M1 	 canreg[ 28]
+  47      =1  #define  	DB6_M1 	 canreg[ 29]
+  48      =1  #define  	DB7_M1 	 canreg[ 30]
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 5   
+
+  49      =1  
+  50      =1  /* CAN Message 2 Registers */ 
+  51      =1  #define  	MCR0_M2	 canreg[ 32]
+  52      =1  #define  	MCR1_M2	 canreg[ 33]
+  53      =1  #define  	UAR0_M2	 canreg[ 34]
+  54      =1  #define  	UAR1_M2	 canreg[ 35]
+  55      =1  #define  	LAR0_M2	 canreg[ 36]
+  56      =1  #define  	LAR1_M2	 canreg[ 37]
+  57      =1  #define  	MCFG_M2	 canreg[ 38]
+  58      =1  #define  	DB0_M2 	 canreg[ 39]
+  59      =1  #define  	DB1_M2 	 canreg[ 40]
+  60      =1  #define  	DB2_M2 	 canreg[ 41]
+  61      =1  #define  	DB3_M2 	 canreg[ 42]
+  62      =1  #define  	DB4_M2 	 canreg[ 43]
+  63      =1  #define  	DB5_M2 	 canreg[ 44]
+  64      =1  #define  	DB6_M2 	 canreg[ 45]
+  65      =1  #define  	DB7_M2 	 canreg[ 46]
+  66      =1  
+  67      =1  /* CAN Message 3 Registers */ 
+  68      =1  #define  	MCR0_M3	 canreg[ 48]
+  69      =1  #define  	MCR1_M3	 canreg[ 49]
+  70      =1  #define  	UAR0_M3	 canreg[ 50]
+  71      =1  #define  	UAR1_M3	 canreg[ 51]
+  72      =1  #define  	LAR0_M3  canreg[ 52]
+  73      =1  #define  	LAR1_M3	 canreg[ 53]
+  74      =1  #define  	MCFG_M3	 canreg[ 54]
+  75      =1  #define  	DB0_M3	 canreg[ 55]
+  76      =1  #define  	DB1_M3	 canreg[ 56]
+  77      =1  #define  	DB2_M3	 canreg[ 57]
+  78      =1  #define  	DB3_M3	 canreg[ 58]
+  79      =1  #define  	DB4_M3	 canreg[ 59]
+  80      =1  #define  	DB5_M3	 canreg[ 60]
+  81      =1  #define  	DB6_M3	 canreg[ 61]
+  82      =1  #define  	DB7_M3	 canreg[ 62]
+  83      =1  
+  84      =1  /* CAN Message 4 Registers */ 
+  85      =1  #define  	MCR0_M4	 canreg[ 64]
+  86      =1  #define  	MCR1_M4	 canreg[ 65]
+  87      =1  #define  	UAR0_M4	 canreg[ 66]
+  88      =1  #define  	UAR1_M4	 canreg[ 67]
+  89      =1  #define  	LAR0_M4	 canreg[ 68]
+  90      =1  #define  	LAR1_M4	 canreg[ 69]
+  91      =1  #define  	MCFG_M4	 canreg[ 70]
+  92      =1  #define  	DB0_M4	 canreg[ 71]
+  93      =1  #define  	DB1_M4	 canreg[ 72]
+  94      =1  #define  	DB2_M4	 canreg[ 73]
+  95      =1  #define  	DB3_M4	 canreg[ 74]
+  96      =1  #define  	DB4_M4	 canreg[ 75]
+  97      =1  #define  	DB5_M4	 canreg[ 76]
+  98      =1  #define  	DB6_M4	 canreg[ 77]
+  99      =1  #define  	DB7_M4	 canreg[ 78]
+ 100      =1  
+ 101      =1  /* CAN Message 5 Registers */ 
+ 102      =1  #define  	MCR0_M5	 canreg[ 80]
+ 103      =1  #define  	MCR1_M5	 canreg[ 81]
+ 104      =1  #define  	UAR0_M5	 canreg[ 82]
+ 105      =1  #define  	UAR1_M5	 canreg[ 83]
+ 106      =1  #define  	LAR0_M5	 canreg[ 84]
+ 107      =1  #define  	LAR1_M5	 canreg[ 85]
+ 108      =1  #define  	MCFG_M5	 canreg[ 86]
+ 109      =1  #define  	DB0_M5	 canreg[ 87]
+ 110      =1  #define  	DB1_M5	 canreg[ 88]
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 6   
+
+ 111      =1  #define  	DB2_M5	 canreg[ 89]
+ 112      =1  #define  	DB3_M5	 canreg[ 90]
+ 113      =1  #define  	DB4_M5	 canreg[ 91]
+ 114      =1  #define  	DB5_M5	 canreg[ 92]
+ 115      =1  #define  	DB6_M5	 canreg[ 93]
+ 116      =1  #define  	DB7_M5	 canreg[ 94]
+ 117      =1  
+ 118      =1  /* CAN Message 6 Registers */ 
+ 119      =1  #define  	MCR0_M6	 canreg[ 96]
+ 120      =1  #define  	MCR1_M6	 canreg[ 97]
+ 121      =1  #define  	UAR0_M6	 canreg[ 98]
+ 122      =1  #define  	UAR1_M6	 canreg[ 99]
+ 123      =1  #define  	LAR0_M6	 canreg[100]
+ 124      =1  #define  	LAR1_M6	 canreg[101]
+ 125      =1  #define  	MCFG_M6	 canreg[102]
+ 126      =1  #define  	DB0_M6	 canreg[103]
+ 127      =1  #define  	DB1_M6	 canreg[104]
+ 128      =1  #define  	DB2_M6	 canreg[105]
+ 129      =1  #define  	DB3_M6	 canreg[106]
+ 130      =1  #define  	DB4_M6	 canreg[107]
+ 131      =1  #define  	DB5_M6	 canreg[108]
+ 132      =1  #define  	DB6_M6	 canreg[109]
+ 133      =1  #define  	DB7_M6	 canreg[110]
+ 134      =1  
+ 135      =1  /* CAN Message 7 Registers */ 
+ 136      =1  #define  	MCR0_M7	 canreg[112]
+ 137      =1  #define  	MCR1_M7	 canreg[113]
+ 138      =1  #define  	UAR0_M7	 canreg[114]
+ 139      =1  #define  	UAR1_M7	 canreg[115]
+ 140      =1  #define  	LAR0_M7	 canreg[116]
+ 141      =1  #define  	LAR1_M7	 canreg[117]
+ 142      =1  #define  	MCFG_M7	 canreg[118]
+ 143      =1  #define  	DB0_M7	 canreg[119]
+ 144      =1  #define  	DB1_M7	 canreg[120]
+ 145      =1  #define  	DB2_M7	 canreg[121]
+ 146      =1  #define  	DB3_M7	 canreg[122]
+ 147      =1  #define  	DB4_M7	 canreg[123]
+ 148      =1  #define  	DB5_M7	 canreg[124]
+ 149      =1  #define  	DB6_M7	 canreg[125]
+ 150      =1  #define  	DB7_M7	 canreg[126]
+ 151      =1  
+ 152      =1  /* CAN Message 8 Registers */ 
+ 153      =1  #define  	MCR0_M8	 canreg[128]
+ 154      =1  #define  	MCR1_M8	 canreg[129]
+ 155      =1  #define  	UAR0_M8	 canreg[130]
+ 156      =1  #define  	UAR1_M8	 canreg[131]
+ 157      =1  #define  	LAR0_M8	 canreg[132]
+ 158      =1  #define  	LAR1_M8	 canreg[133]
+ 159      =1  #define  	MCFG_M8	 canreg[134]
+ 160      =1  #define  	DB0_M8	 canreg[135]
+ 161      =1  #define  	DB1_M8	 canreg[136]
+ 162      =1  #define  	DB2_M8	 canreg[137]
+ 163      =1  #define  	DB3_M8	 canreg[138]
+ 164      =1  #define  	DB4_M8	 canreg[139]
+ 165      =1  #define  	DB5_M8	 canreg[130]
+ 166      =1  #define  	DB6_M8	 canreg[131]
+ 167      =1  #define  	DB7_M8	 canreg[132]
+ 168      =1  
+ 169      =1  /* CAN Message 9 Registers */ 
+ 170      =1  #define  	MCR0_M9	 canreg[144]
+ 171      =1  #define  	MCR1_M9	 canreg[145]
+ 172      =1  #define  	UAR0_M9	 canreg[146]
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 7   
+
+ 173      =1  #define  	UAR1_M9	 canreg[147]
+ 174      =1  #define  	LAR0_M9	 canreg[148]
+ 175      =1  #define  	LAR1_M9	 canreg[149]
+ 176      =1  #define  	MCFG_M9	 canreg[150]
+ 177      =1  #define  	DB0_M9	 canreg[151]
+ 178      =1  #define  	DB1_M9	 canreg[152]
+ 179      =1  #define  	DB2_M9	 canreg[153]
+ 180      =1  #define  	DB3_M9	 canreg[154]
+ 181      =1  #define  	DB4_M9	 canreg[155]
+ 182      =1  #define  	DB5_M9	 canreg[156]
+ 183      =1  #define  	DB6_M9	 canreg[157]
+ 184      =1  #define  	DB7_M9	 canreg[158]
+ 185      =1  
+ 186      =1  /* CAN Message 10 Registers */ 
+ 187      =1  #define     MCR0_M10  canreg[160]
+ 188      =1  #define     MCR1_M10  canreg[161]
+ 189      =1  #define     UAR0_M10  canreg[162]
+ 190      =1  #define     UAR1_M10  canreg[163]
+ 191      =1  #define     LAR0_M10  canreg[164]
+ 192      =1  #define     LAR1_M10  canreg[165]
+ 193      =1  #define     MCFG_M10  canreg[166]
+ 194      =1  #define     DB0_M10   canreg[167]
+ 195      =1  #define     DB1_M10   canreg[168]
+ 196      =1  #define     DB2_M10   canreg[169]
+ 197      =1  #define     DB3_M10   canreg[170]
+ 198      =1  #define     DB4_M10   canreg[171]
+ 199      =1  #define     DB5_M10   canreg[172]
+ 200      =1  #define     DB6_M10   canreg[173]
+ 201      =1  #define     DB7_M10   canreg[174]
+ 202      =1  
+ 203      =1  /* CAN Message 11 Registers */ 
+ 204      =1  #define     MCR0_M11  canreg[176]
+ 205      =1  #define     MCR1_M11  canreg[177]
+ 206      =1  #define     UAR0_M11  canreg[178]
+ 207      =1  #define     UAR1_M11  canreg[179]
+ 208      =1  #define     LAR0_M11  canreg[180]
+ 209      =1  #define     LAR1_M11  canreg[181]
+ 210      =1  #define     MCFG_M11  canreg[182]
+ 211      =1  #define     DB0_M11   canreg[183]
+ 212      =1  #define     DB1_M11   canreg[184]
+ 213      =1  #define     DB2_M11   canreg[185]
+ 214      =1  #define     DB3_M11   canreg[186]
+ 215      =1  #define     DB4_M11   canreg[187]
+ 216      =1  #define     DB5_M11   canreg[188]
+ 217      =1  #define     DB6_M11   canreg[189]
+ 218      =1  #define     DB7_M11   canreg[190]
+ 219      =1  
+ 220      =1  /* CAN Message 12 Registers */ 
+ 221      =1  #define     MCR0_M12  canreg[192]
+ 222      =1  #define     MCR1_M12  canreg[193]
+ 223      =1  #define     UAR0_M12  canreg[194]
+ 224      =1  #define     UAR1_M12  canreg[195]
+ 225      =1  #define     LAR0_M12  canreg[196]
+ 226      =1  #define     LAR1_M12  canreg[197]
+ 227      =1  #define     MCFG_M12  canreg[198]
+ 228      =1  #define     DB0_M12   canreg[199]
+ 229      =1  #define     DB1_M12   canreg[200]
+ 230      =1  #define     DB2_M12   canreg[201]
+ 231      =1  #define     DB3_M12   canreg[202]
+ 232      =1  #define     DB4_M12   canreg[203]
+ 233      =1  #define     DB5_M12   canreg[204]
+ 234      =1  #define     DB6_M12   canreg[205]
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 8   
+
+ 235      =1  #define     DB7_M12   canreg[206]
+ 236      =1  
+ 237      =1  /* CAN Message 13 Registers */ 
+ 238      =1  #define     MCR0_M13  canreg[208]
+ 239      =1  #define     MCR1_M13  canreg[209]
+ 240      =1  #define     UAR0_M13  canreg[210]
+ 241      =1  #define     UAR1_M13  canreg[211]
+ 242      =1  #define     LAR0_M13  canreg[212]
+ 243      =1  #define     LAR1_M13  canreg[213]
+ 244      =1  #define     MCFG_M13  canreg[214]
+ 245      =1  #define     DB0_M13   canreg[215]
+ 246      =1  #define     DB1_M13   canreg[216]
+ 247      =1  #define     DB2_M13   canreg[217]
+ 248      =1  #define     DB3_M13   canreg[218]
+ 249      =1  #define     DB4_M13   canreg[219]
+ 250      =1  #define     DB5_M13   canreg[220]
+ 251      =1  #define     DB6_M13   canreg[221]
+ 252      =1  #define     DB7_M13   canreg[222]
+ 253      =1  
+ 254      =1  /* CAN Message 14 Registers */ 
+ 255      =1  #define     MCR0_M14  canreg[224]
+ 256      =1  #define     MCR1_M14  canreg[225]
+ 257      =1  #define     UAR0_M14  canreg[226]
+ 258      =1  #define     UAR1_M14  canreg[227]
+ 259      =1  #define     LAR0_M14  canreg[228]
+ 260      =1  #define     LAR1_M14  canreg[229]
+ 261      =1  #define     MCFG_M14  canreg[230]
+ 262      =1  #define     DB0_M14   canreg[231]
+ 263      =1  #define     DB1_M14   canreg[232]
+ 264      =1  #define     DB2_M14   canreg[233]
+ 265      =1  #define     DB3_M14   canreg[234]
+ 266      =1  #define     DB4_M14   canreg[235]
+ 267      =1  #define     DB5_M14   canreg[236]
+ 268      =1  #define     DB6_M14   canreg[237]
+ 269      =1  #define     DB7_M14   canreg[238]
+ 270      =1  
+ 271      =1  /* CAN Message 15 Registers */ 
+ 272      =1  #define     MCR0_M15  canreg[240]
+ 273      =1  #define     MCR1_M15  canreg[241]
+ 274      =1  #define     UAR0_M15  canreg[242]
+ 275      =1  #define     UAR1_M15  canreg[243]
+ 276      =1  #define     LAR0_M15  canreg[244] 
+ 277      =1  #define     LAR1_M15  canreg[245]
+ 278      =1  #define     MCFG_M15  canreg[246]
+ 279      =1  #define     DB0_M15   canreg[247]
+ 280      =1  #define     DB1_M15   canreg[248]
+ 281      =1  #define     DB2_M15   canreg[249]
+ 282      =1  #define     DB3_M15   canreg[250]
+ 283      =1  #define     DB4_M15   canreg[251]
+ 284      =1  #define     DB5_M15   canreg[252]
+ 285      =1  #define     DB6_M15   canreg[253]
+ 286      =1  #define     DB7_M15   canreg[254]
+ 287      =1  
+   6          #include "uart.h"
+   1      =1  /* 1st byte : functional group */
+   2      =1  #define REGISTER_DISPLAY 0x00
+   3      =1  #define REGISTER_SET 0x01
+   4      =1  #define CANMSG_TRANSMIT 0x02
+   5      =1  #define CANMSG_DATASET  0x03
+   6      =1  #define CAN_RESET      0x04
+   7      =1  
+   8      =1  #define CAN_REQUEST 0x10
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 9   
+
+   9      =1  #define CAN_RESPONSE 0x20
+  10      =1  
+  11      =1  #define NODE_START 0xFF
+  12      =1  
+  13      =1  
+  14      =1  /* 2nd byte : REGISTER ID     */
+  15      =1  #define GENERAL_REGISTER 0x00
+  16      =1  #define MSG_OBJECT1 0x01
+  17      =1  #define MSG_OBJECT2 0x02
+  18      =1  #define MSG_OBJECT3 0x03
+  19      =1  #define MSG_OBJECT4 0x04
+  20      =1  #define MSG_OBJECT5 0x05
+  21      =1  #define MSG_OBJECT6 0x06
+  22      =1  #define MSG_OBJECT7 0x07
+  23      =1  #define MSG_OBJECT8 0x08
+  24      =1  #define MSG_OBJECT9 0x09
+  25      =1  #define MSG_OBJECTA 0x0A
+  26      =1  #define MSG_OBJECTB 0x0B
+  27      =1  #define MSG_OBJECTC 0x0C
+  28      =1  #define MSG_OBJECTD 0x0D
+  29      =1  #define MSG_OBJECTE 0x0E
+  30      =1  #define MSG_OBJECTF 0x0F
+  31      =1  
+  32      =1  /*3rd byte : show all or show single */
+  33      =1  #define SHOW_ALL  0xFF
+  34      =1  
+  35      =1  
+  36      =1  typedef struct{
+  37      =1  	unsigned char flag;
+  38      =1  	unsigned int len;
+  39      =1  	unsigned char rdata[30];
+  40      =1  } UART_MSG;
+  41      =1  
+  42      =1  void Init_UART();
+  43      =1  unsigned char ReadChar();
+  44      =1  void WriteChar(unsigned char Data);
+  45      =1  void TransmitMessage(unsigned char* msg, int len);void create_error_msg(unsigned char *msg);
+   7          
+   8          UART_MSG RecvData;
+   9          unsigned char Error_Buf[30];
+  10          int error_flag = 0;
+  11          unsigned char alive_flag = 0;
+  12          unsigned char alive_buf[3];
+  13          
+  14          void Init_UART()
+  15          {
+  16   1      	int i;
+  17   1      
+  18   1      	EAL = 0;
+  19   1      	TMOD |= 0x20;    // 8-bit timer (8-bit autoload)
+  20   1      
+  21   1      	SCON = 0x50;    // mode 1, TI = 0, RI = 0
+  22   1      	TH1 = 251;  	// baud rate = 19200, 10 MHz
+  23   1      	SBUF = 0;
+  24   1      	PCON = 0x80;	// SMOD = 1
+  25   1      
+  26   1      	EAL = 1;
+  27   1      	TR1 = 1;		// timer 1 start
+  28   1      
+  29   1      	RecvData.flag = 0;
+  30   1      	RecvData.len = 0;
+  31   1      
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 10  
+
+  32   1      	for(i=0; i<30; i++)
+  33   1      		Error_Buf[i] = 0x00;
+  34   1      }
+  35          
+  36          void WriteChar(unsigned char Data)
+  37          {
+  38   1      	while(!TI) ;
+  39   1      	SBUF = Data;
+  40   1      	TI = 0;
+  41   1      }
+  42          
+  43          
+  44          unsigned char ReadChar()
+  45          {
+  46   1      	unsigned char ch;
+  47   1      
+  48   1      	while(!RI) ;
+  49   1      
+  50   1      	ch = SBUF;
+  51   1      	RI = 0;
+  52   1      
+  53   1      	return ch;
+  54   1      }    
+  55          
+  56          void TransmitMessage(unsigned char* msg, int len)
+  57          {
+  58   1      	unsigned char debug_msg[30];
+  59   1      
+  60   1      	int i;
+  61   1      	int debug_len;
+  62   1      
+  63   1      	debug_len = SLIP_Encode_Frame(msg, len, debug_msg);
+  64   1          for (i = 0; i < debug_len; i++)
+  65   1      	{
+  66   2      		WriteChar(debug_msg[i]);
+  67   2      	}	
+  68   1      }
+  69          
+  70          void create_error_msg(unsigned char *msg){
+  71   1      	msg[0] = NODE_ID;
+  72   1      	if(SR & 0x80)
+  73   1      		msg[1] = BUSOFF;
+  74   1      	else{
+  75   2      		switch(SR & 0x07){
+  76   3      		case 0x01 : msg[1] = STUFF_ERROR;
+  77   3      			break;
+  78   3      		case 0x02 : msg[1] = FORM_ERROR;
+  79   3      			break;
+  80   3      		case 0x03 : msg[1] = ACK_ERROR;
+  81   3      			break;
+  82   3      		case 0x06 : msg[1] = CRC_ERROR;
+  83   3      			break;
+  84   3      		}
+  85   2      	}
+  86   1      }
+  87          
+  88          
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 11  
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION Init_UART (BEGIN)
+                                           ; SOURCE LINE # 14
+                                           ; SOURCE LINE # 15
+                                           ; SOURCE LINE # 18
+0000 C2AF              CLR     EAL
+                                           ; SOURCE LINE # 19
+0002 438920            ORL     TMOD,#020H
+                                           ; SOURCE LINE # 21
+0005 759850            MOV     SCON,#050H
+                                           ; SOURCE LINE # 22
+0008 758DFB            MOV     TH1,#0FBH
+                                           ; SOURCE LINE # 23
+000B E4                CLR     A
+000C F599              MOV     SBUF,A
+                                           ; SOURCE LINE # 24
+000E 758780            MOV     PCON,#080H
+                                           ; SOURCE LINE # 26
+0011 D2AF              SETB    EAL
+                                           ; SOURCE LINE # 27
+0013 D28E              SETB    TR1
+                                           ; SOURCE LINE # 29
+0015 900000      R     MOV     DPTR,#RecvData
+0018 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 30
+0019 A3                INC     DPTR
+001A F0                MOVX    @DPTR,A
+001B A3                INC     DPTR
+001C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 32
+;---- Variable 'i' assigned to Register 'R6/R7' ----
+001D FF                MOV     R7,A
+001E FE                MOV     R6,A
+001F         ?C0001:
+                                           ; SOURCE LINE # 33
+001F 7E1E              MOV     R6,#01EH
+0021 900000      R     MOV     DPTR,#Error_Buf
+0024 E4                CLR     A
+0025         ?C0023:
+0025 F0                MOVX    @DPTR,A
+0026 A3                INC     DPTR
+0027 DEFC              DJNZ    R6,?C0023
+                                           ; SOURCE LINE # 34
+0029         ?C0004:
+0029 22                RET     
+             ; FUNCTION Init_UART (END)
+
+             ; FUNCTION _WriteChar (BEGIN)
+                                           ; SOURCE LINE # 36
+;---- Variable 'Data' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 37
+0000         ?C0005:
+                                           ; SOURCE LINE # 38
+0000 3099FD            JNB     TI,?C0005
+0003         ?C0006:
+                                           ; SOURCE LINE # 39
+0003 8F99              MOV     SBUF,R7
+                                           ; SOURCE LINE # 40
+0005 C299              CLR     TI
+                                           ; SOURCE LINE # 41
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 12  
+
+0007 22                RET     
+             ; FUNCTION _WriteChar (END)
+
+             ; FUNCTION ReadChar (BEGIN)
+                                           ; SOURCE LINE # 44
+                                           ; SOURCE LINE # 45
+0000         ?C0008:
+                                           ; SOURCE LINE # 48
+0000 3098FD            JNB     RI,?C0008
+0003         ?C0009:
+                                           ; SOURCE LINE # 50
+;---- Variable 'ch' assigned to Register 'R7' ----
+0003 AF99              MOV     R7,SBUF
+                                           ; SOURCE LINE # 51
+0005 C298              CLR     RI
+                                           ; SOURCE LINE # 53
+                                           ; SOURCE LINE # 54
+0007         ?C0010:
+0007 22                RET     
+             ; FUNCTION ReadChar (END)
+
+             ; FUNCTION _TransmitMessage (BEGIN)
+                                           ; SOURCE LINE # 56
+;---- Variable 'len' assigned to Register 'R4/R5' ----
+;---- Variable 'msg' assigned to Register 'R1/R2/R3' ----
+                                           ; SOURCE LINE # 57
+                                           ; SOURCE LINE # 63
+0000 900000      E     MOV     DPTR,#?_SLIP_Encode_Frame?BYTE+05H
+0003 7401              MOV     A,#01H
+0005 F0                MOVX    @DPTR,A
+0006 A3                INC     DPTR
+0007 7400        R     MOV     A,#HIGH debug_msg
+0009 F0                MOVX    @DPTR,A
+000A A3                INC     DPTR
+000B 7400        R     MOV     A,#LOW debug_msg
+000D F0                MOVX    @DPTR,A
+000E 120000      E     LCALL   _SLIP_Encode_Frame
+;---- Variable 'debug_len' assigned to Register 'R4/R5' ----
+0011 AD07              MOV     R5,AR7
+0013 AC06              MOV     R4,AR6
+                                           ; SOURCE LINE # 64
+;---- Variable 'i' assigned to Register 'R2/R3' ----
+0015 E4                CLR     A
+0016 FB                MOV     R3,A
+0017 FA                MOV     R2,A
+0018         ?C0011:
+0018 C3                CLR     C
+0019 EB                MOV     A,R3
+001A 9D                SUBB    A,R5
+001B EC                MOV     A,R4
+001C 6480              XRL     A,#080H
+001E F8                MOV     R0,A
+001F EA                MOV     A,R2
+0020 6480              XRL     A,#080H
+0022 98                SUBB    A,R0
+0023 5016              JNC     ?C0014
+                                           ; SOURCE LINE # 65
+                                           ; SOURCE LINE # 66
+0025 7400        R     MOV     A,#LOW debug_msg
+0027 2B                ADD     A,R3
+0028 F582              MOV     DPL,A
+002A E4                CLR     A
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 13  
+
+002B 3400        R     ADDC    A,#HIGH debug_msg
+002D F583              MOV     DPH,A
+002F E0                MOVX    A,@DPTR
+0030 FF                MOV     R7,A
+0031 120000      R     LCALL   _WriteChar
+                                           ; SOURCE LINE # 67
+0034 0B                INC     R3
+0035 BB0001            CJNE    R3,#00H,?C0024
+0038 0A                INC     R2
+0039         ?C0024:
+0039 80DD              SJMP    ?C0011
+                                           ; SOURCE LINE # 68
+003B         ?C0014:
+003B 22                RET     
+             ; FUNCTION _TransmitMessage (END)
+
+             ; FUNCTION _create_error_msg (BEGIN)
+                                           ; SOURCE LINE # 70
+;---- Variable 'msg' assigned to Register 'R1/R2/R3' ----
+                                           ; SOURCE LINE # 71
+0000 7402              MOV     A,#02H
+0002 120000      E     LCALL   ?C?CSTPTR
+                                           ; SOURCE LINE # 72
+0005 7800        E     MOV     R0,#LOW canreg+01H
+0007 E2                MOVX    A,@R0
+0008 FF                MOV     R7,A
+0009 30E708            JNB     ACC.7,?C0015
+                                           ; SOURCE LINE # 73
+000C 900001            MOV     DPTR,#01H
+000F 74FF              MOV     A,#0FFH
+0011 020000      E     LJMP    ?C?CSTOPTR
+0014         ?C0015:
+                                           ; SOURCE LINE # 74
+                                           ; SOURCE LINE # 75
+0014 EF                MOV     A,R7
+0015 5407              ANL     A,#07H
+0017 24FE              ADD     A,#0FEH
+0019 6013              JZ      ?C0019
+001B 14                DEC     A
+001C 6018              JZ      ?C0020
+001E 24FD              ADD     A,#0FDH
+0020 601C              JZ      ?C0021
+0022 2405              ADD     A,#05H
+0024 7020              JNZ     ?C0022
+                                           ; SOURCE LINE # 76
+0026         ?C0018:
+0026 900001            MOV     DPTR,#01H
+0029 74F0              MOV     A,#0F0H
+002B 020000      E     LJMP    ?C?CSTOPTR
+                                           ; SOURCE LINE # 77
+                                           ; SOURCE LINE # 78
+002E         ?C0019:
+002E 900001            MOV     DPTR,#01H
+0031 74F1              MOV     A,#0F1H
+0033 020000      E     LJMP    ?C?CSTOPTR
+                                           ; SOURCE LINE # 79
+                                           ; SOURCE LINE # 80
+0036         ?C0020:
+0036 900001            MOV     DPTR,#01H
+0039 74F2              MOV     A,#0F2H
+003B 020000      E     LJMP    ?C?CSTOPTR
+                                           ; SOURCE LINE # 81
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 14  
+
+                                           ; SOURCE LINE # 82
+003E         ?C0021:
+003E 900001            MOV     DPTR,#01H
+0041 74F3              MOV     A,#0F3H
+0043 120000      E     LCALL   ?C?CSTOPTR
+                                           ; SOURCE LINE # 83
+                                           ; SOURCE LINE # 84
+                                           ; SOURCE LINE # 85
+                                           ; SOURCE LINE # 86
+0046         ?C0022:
+0046 22                RET     
+             ; FUNCTION _create_error_msg (END)
+
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 15  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+ReadChar . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  ch . . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+T2I0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C8H  1
+_TransmitMessage . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  msg. . . . . . . . . . . . . . . . .  * REG *  DATA   PTR      0001H  3
+  len. . . . . . . . . . . . . . . . .  * REG *  DATA   INT      0004H  2
+  debug_msg. . . . . . . . . . . . . .  AUTO     XDATA  ARRAY    0000H  30
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   INT      0002H  2
+  debug_len. . . . . . . . . . . . . .  * REG *  DATA   INT      0004H  2
+AC . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D6H  1
+T2L1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C9H  1
+T0 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B4H  1
+T1 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B5H  1
+UART_MSG . . . . . . . . . . . . . . .  TYPEDEF  -----  STRUCT   -----  33
+  flag . . . . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0000H  1
+  len. . . . . . . . . . . . . . . . .  MEMBER   -----  U_INT    0001H  2
+  rdata. . . . . . . . . . . . . . . .  MEMBER   -----  ARRAY    0003H  30
+BD . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DFH  1
+T2R0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CBH  1
+T2R1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CCH  1
+Error_Buf. . . . . . . . . . . . . . .  PUBLIC   XDATA  ARRAY    0000H  30
+EADC . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B8H  1
+RecvData . . . . . . . . . . . . . . .  PUBLIC   XDATA  STRUCT   001EH  33
+_create_error_msg. . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  msg. . . . . . . . . . . . . . . . .  * REG *  DATA   PTR      0001H  3
+alive_flag . . . . . . . . . . . . . .  PUBLIC   XDATA  U_CHAR   003FH  1
+IADC . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C0H  1
+I2FR . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CDH  1
+I3FR . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CEH  1
+EXF2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C7H  1
+RD . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B7H  1
+T2CM . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CAH  1
+ECAN . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009BH  1
+ES . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ACH  1
+IEX2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C1H  1
+_SLIP_Encode_Frame . . . . . . . . . .  EXTERN   CODE   PROC     -----  -----
+IEX3 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C2H  1
+IEX4 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C3H  1
+RI . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0098H  1
+CY . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D7H  1
+IEX5 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C4H  1
+INT0 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B2H  1
+IEX6 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C5H  1
+INT1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B3H  1
+TI . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0099H  1
+EX6M . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BDH  1
+ADEX . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DDH  1
+INT8 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00EDH  1
+OV . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D2H  1
+WR . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B6H  1
+error_flag . . . . . . . . . . . . . .  PUBLIC   XDATA  INT      0040H  2
+T2PS . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00CFH  1
+ADST . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00E8H  1
+SCLK . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00E9H  1
+ESSC . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009CH  1
+SBUF . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0099H  1
+PCON . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0087H  1
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 16  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+RXDC . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00EFH  1
+alive_buf. . . . . . . . . . . . . . .  PUBLIC   XDATA  ARRAY    0042H  3
+Init_UART. . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   INT      0006H  2
+TXDC . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00EEH  1
+SCON . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0098H  1
+TMOD . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0089H  1
+IE0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0089H  1
+IE1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008BH  1
+SWDT . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BEH  1
+ET0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A9H  1
+ET1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ABH  1
+TF0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008DH  1
+ET2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ADH  1
+TF1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008FH  1
+TF2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00C6H  1
+RB8. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009AH  1
+EX0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A8H  1
+IT0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0088H  1
+TH1. . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   008DH  1
+EX1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00AAH  1
+TB8. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009BH  1
+IT1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008AH  1
+P. . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D0H  1
+EX2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B9H  1
+EX3. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BAH  1
+SM0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009FH  1
+EX4. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BBH  1
+SM1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009EH  1
+ADM. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DBH  1
+EX5. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BCH  1
+EAL. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00AFH  1
+SM2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009DH  1
+EX7. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009EH  1
+RS0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D3H  1
+MX0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D8H  1
+EX8. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009FH  1
+RS1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D4H  1
+MX1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D9H  1
+TR0. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008CH  1
+MX2. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DAH  1
+TR1. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      008EH  1
+CLK. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DEH  1
+EXEN2. . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00BFH  1
+REN. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      009CH  1
+_WriteChar . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  Data . . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+SRI. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00EAH  1
+BSY. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00DCH  1
+RXD. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B0H  1
+WDT. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00AEH  1
+TXD. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00B1H  1
+SLS. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00ECH  1
+canreg . . . . . . . . . . . . . . . .  EXTERN   PDATA  ARRAY    -----  256
+F0 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D5H  1
+STO. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00EBH  1
+F1 . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00D1H  1
+
+C51 COMPILER V6.14  UART                                                                   11/26/2005 20:58:30 PAGE 17  
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    189    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     69      30
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
